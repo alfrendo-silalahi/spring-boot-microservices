@@ -16,8 +16,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "customer")
-public class Accounts extends BaseEntity{
+@Table(name = "accounts")
+public class Accounts extends BaseEntity {
     
     @Column(name = "customer_id")
     private Long customerId;
