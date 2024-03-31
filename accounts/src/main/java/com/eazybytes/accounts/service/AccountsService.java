@@ -10,4 +10,6 @@ public interface AccountsService {
      */
     void createAccount(CustomerDTO customerDTO);
 
+    CustomerDTO getAccountDetail(String mobileNumber);
+
 }

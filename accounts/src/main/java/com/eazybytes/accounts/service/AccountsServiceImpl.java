@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eazybytes.accounts.constant.AccountsConstant;
+import com.eazybytes.accounts.dto.AccountsDTO;
 import com.eazybytes.accounts.dto.CustomerDTO;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
+import com.eazybytes.accounts.exception.ResourceNotFoundException;
+import com.eazybytes.accounts.mapper.AccountsMapper;
 import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
@@ -59,6 +62,17 @@ public class AccountsServiceImpl implements AccountsService {
         newAccounts.setCreatedBy("Anonymous");
 
         return newAccounts;
+    }
+
+    @Override
+    public CustomerDTO getAccountDetail(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+        Accounts account = accountsRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "customerId", String.valueOf(customer.getCustomerId())));
+        CustomerDTO customerDTO = CustomerMapper.mapToCustomerDTO(customer, new CustomerDTO());
+        customerDTO.setAccount(AccountsMapper.mapToAccountsDTO(account, new AccountsDTO()));
+        return customerDTO;
     }
 
 }
