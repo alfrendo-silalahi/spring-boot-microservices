@@ -78,6 +78,7 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
     @Override
+    @Transactional
     public boolean updateAccount(CustomerDTO customerDTO) {
         AccountsDTO accountsDTO = customerDTO.getAccount();
         if (accountsDTO != null) {
@@ -96,6 +97,16 @@ public class AccountsServiceImpl implements AccountsService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "CustomerMobileNumber", mobileNumber));
+        accountsRepository.deleteByCustomerId(customer.getCustomerId());
+        customerRepository.deleteById(customer.getCustomerId());
+        return true;
     }
 
 }
