@@ -8,7 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    sql-true: true
     properties:
+      sql-true: true
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -4,12 +4,10 @@ import com.eazybytes.accounts.dto.CustomerDTO;
 
 public interface AccountsService {
 
-    /**
-     * 
-     * @param customerDTO
-     */
     void createAccount(CustomerDTO customerDTO);
 
     CustomerDTO getAccountDetail(String mobileNumber);
+
+    boolean updateAccount(CustomerDTO customerDTO);
 
 }

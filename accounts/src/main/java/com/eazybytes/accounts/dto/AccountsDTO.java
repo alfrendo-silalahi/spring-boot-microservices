@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AccountsDTO {
 
-    private long accountNumber;
+    private Long accountNumber;
 
     private String accountType;
 
