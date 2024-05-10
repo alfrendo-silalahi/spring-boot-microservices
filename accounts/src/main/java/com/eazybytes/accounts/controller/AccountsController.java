@@ -3,6 +3,7 @@ package com.eazybytes.accounts.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,11 @@ import com.eazybytes.accounts.dto.CustomerDTO;
 import com.eazybytes.accounts.dto.ResponseDTO;
 import com.eazybytes.accounts.service.AccountsService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/api/accounts", produces = { MediaType.APPLICATION_JSON_VALUE })
+@Validated
 public class AccountsController {
 
     private final AccountsService accountsService;
@@ -34,8 +38,8 @@ public class AccountsController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO> createAccount(@RequestBody CustomerDTO customerDTO) {
-        accountsService.createAccount(customerDTO);
+    public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
+        accountsService.createNewAccount(customerDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDTO(STATUS_201, MESSAGE_201));
@@ -48,7 +52,7 @@ public class AccountsController {
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDTO> updateAccountDetail(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<ResponseDTO> updateAccountDetail(@Valid @RequestBody CustomerDTO customerDTO) {
         boolean isUpdated = accountsService.updateAccount(customerDTO);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(STATUS_200, MESSAGE_200));

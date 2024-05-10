@@ -31,7 +31,7 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     @Transactional
-    public void createAccount(CustomerDTO customerDTO) {
+    public void createNewAccount(CustomerDTO customerDTO) {
         Optional<Customer> customerOptional = customerRepository.findByMobileNumber(customerDTO.getMobileNumber());
         if (customerOptional.isPresent()) {
             throw new CustomerAlreadyExistsException(
@@ -46,10 +46,10 @@ public class AccountsServiceImpl implements AccountsService {
 
         Customer newCustomer = customerRepository.save(customer);
 
-        accountsRepository.save(createAccounts(newCustomer));
+        accountsRepository.save(createAccount(newCustomer));
     }
 
-    private Accounts createAccounts(Customer customer) {
+    private Accounts createAccount(Customer customer) {
         Accounts newAccounts = new Accounts();
         newAccounts.setCustomerId(customer.getCustomerId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
@@ -57,11 +57,6 @@ public class AccountsServiceImpl implements AccountsService {
         newAccounts.setAccountNumber(randomAccNumber);
         newAccounts.setAccountType(AccountsConstant.SAVINGS);
         newAccounts.setBranchAddress(AccountsConstant.ADDRESS);
-
-        // Temporary
-        newAccounts.setCreatedAt(LocalDateTime.now());
-        newAccounts.setCreatedBy("Anonymous");
-
         return newAccounts;
     }
 
