@@ -1,4 +1,4 @@
-package com.eazybytes.audit;
+package com.eazybytes.accounts.audit;
 
 import java.util.Optional;
 
